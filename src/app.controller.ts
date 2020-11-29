@@ -1,5 +1,6 @@
 import { Controller, Get, Param, Post, Body, Delete, Put } from '@nestjs/common';
 import { AppService, TodoListService } from './app.service';
+import { Todo } from './types';
 
 @Controller()
 export class AppController {
@@ -16,28 +17,28 @@ export class TodoListController {
   constructor(private readonly todoListService: TodoListService) {}
 
   @Get()
-  getTodoList() {
+  getTodoList(): Todo[] {
     return this.todoListService.getTodoList();
   }
 
   @Post()
-  createNewItem(@Body() payload) {
+  createNewItem(@Body() payload: Todo) {
     const { title } = payload;
     this.todoListService.createNewItem(title);
   }
 
   @Get('/:id')
-  getItemById(@Param('id') id) {
+  getItemById(@Param('id') id: string) {
     return this.todoListService.getItemById(id);
   }
 
   @Put('/:id')
-  toogleFinishItemById(@Param('id') id) {
+  toogleFinishItemById(@Param('id') id: string) {
     return this.todoListService.toogleFinishItemById(id);
   }
 
   @Delete('/:id')
-  deleteItemById(@Param('id') id) {
+  deleteItemById(@Param('id') id: string) {
     return this.todoListService.deleteItemById(id);
   }
 }

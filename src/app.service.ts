@@ -3,6 +3,7 @@
 import { Injectable } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
+import { Todo } from './types';
 
 @Injectable()
 export class AppService {
@@ -15,32 +16,33 @@ export class AppService {
 
 @Injectable()
 export class TodoListService {
-  getTodoList() {
-    const data = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'data.json')).toString());
+  getTodoList(): Todo[] {
+    const data: Todo[] = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'data.json')).toString());
     return data;
   }
-  getItemById(id) {
-    const data = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'data.json')).toString());
-    return data.find((item) => item.id == id);
+  getItemById(id: string): Todo {
+    const data: Todo[] = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'data.json')).toString());
+    return data.find((item) => item.id === id);
   }
-  createNewItem(title) {
-    const data = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'data.json')).toString());
-    data.push({ id: Math.random(), title, isFinish: false });
+  createNewItem(title: string) {
+    const data: Todo[] = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'data.json')).toString());
+    const newItem: Todo = new Todo(Math.random().toString(), title, false);
+    data.push(newItem);
     fs.writeFileSync(path.resolve(__dirname, 'data.json'), JSON.stringify(data));
   }
-  toogleFinishItemById(id) {
-    const data = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'data.json')).toString());
+  toogleFinishItemById(id: string) {
+    const data: Todo[] = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'data.json')).toString());
     data.map((item) => {
-      if (item.id == id) {
+      if (item.id === id) {
         item.isFinish = !item.isFinish;
       }
       return item;
     });
     fs.writeFileSync(path.resolve(__dirname, 'data.json'), JSON.stringify(data));
   }
-  deleteItemById(id) {
-    const data = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'data.json')).toString());
-    const filteredData = data.filter((item) => item.id != id);
+  deleteItemById(id: string) {
+    const data: Todo[] = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'data.json')).toString());
+    const filteredData: Todo[] = data.filter((item) => item.id !== id);
     fs.writeFileSync(path.resolve(__dirname, 'data.json'), JSON.stringify(filteredData));
   }
 }
