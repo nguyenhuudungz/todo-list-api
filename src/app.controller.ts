@@ -23,8 +23,8 @@ export class TodoListController {
 
   @Post()
   createNewItem(@Body() payload: Todo) {
-    const { title } = payload;
-    this.todoListService.createNewItem(title);
+    const { title, place } = payload;
+    this.todoListService.createNewItem(title, place);
   }
 
   @Get('/:id')

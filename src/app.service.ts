@@ -3,7 +3,7 @@
 import { Injectable } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
-import { Todo } from './types';
+import { Place, Todo } from './types';
 
 @Injectable()
 export class AppService {
@@ -24,9 +24,9 @@ export class TodoListService {
     const data: Todo[] = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'data.json')).toString());
     return data.find((item) => item.id === id);
   }
-  createNewItem(title: string) {
+  createNewItem(title: string, place: Place) {
     const data: Todo[] = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'data.json')).toString());
-    const newItem: Todo = new Todo(Math.random().toString(), title, false);
+    const newItem: Todo = new Todo(Math.random().toString(), title, false, place);
     data.push(newItem);
     fs.writeFileSync(path.resolve(__dirname, 'data.json'), JSON.stringify(data));
   }
