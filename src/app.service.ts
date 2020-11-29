@@ -25,7 +25,17 @@ export class TodoListService {
   }
   createNewItem(title) {
     const data = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'data.json')).toString());
-    data.push({ id: Math.random(), title });
+    data.push({ id: Math.random(), title, isFinish: false });
+    fs.writeFileSync(path.resolve(__dirname, 'data.json'), JSON.stringify(data));
+  }
+  toogleFinishItemById(id) {
+    const data = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'data.json')).toString());
+    data.map((item) => {
+      if (item.id == id) {
+        item.isFinish = !item.isFinish;
+      }
+      return item;
+    });
     fs.writeFileSync(path.resolve(__dirname, 'data.json'), JSON.stringify(data));
   }
   deleteItemById(id) {

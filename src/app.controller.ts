@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Body, Delete } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Delete, Put } from '@nestjs/common';
 import { AppService, TodoListService } from './app.service';
 
 @Controller()
@@ -29,6 +29,11 @@ export class TodoListController {
   @Get('/:id')
   getItemById(@Param('id') id) {
     return this.todoListService.getItemById(id);
+  }
+
+  @Put('/:id')
+  toogleFinishItemById(@Param('id') id) {
+    return this.todoListService.toogleFinishItemById(id);
   }
 
   @Delete('/:id')
