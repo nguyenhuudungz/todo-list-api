@@ -22,12 +22,10 @@ export class TodoListController {
   }
 
   @Post()
-  createNewItem(@Body() payload: Todo) {
+  createNewItem(@Body() payload: Todo): Todo {
     const { title, place } = payload;
-    const newItemId = this.todoListService.createNewItem(title, place);
-    return {
-      id: newItemId,
-    };
+    const newItem: Todo = this.todoListService.createNewItem(title, place);
+    return newItem;
   }
 
   @Get('/:id')
