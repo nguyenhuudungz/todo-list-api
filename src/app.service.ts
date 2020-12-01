@@ -1,8 +1,6 @@
 'use strict';
 
 import { Injectable } from '@nestjs/common';
-import * as fs from 'fs';
-import * as path from 'path';
 import { Place, Todo } from './types';
 
 @Injectable()
@@ -14,33 +12,47 @@ export class AppService {
 
 // My Code Here
 
-const data: Todo[] = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'data.json')).toString());
-
 @Injectable()
 export class TodoListService {
+  data: Todo[] = [
+    {
+      id: '0.42045283354554064',
+      title: 'Mua sữa ở VinMart',
+      isFinish: false,
+    },
+    {
+      id: '0.09734088843234234',
+      title: 'Làm bài tập Todo List',
+      isFinish: false,
+    },
+    {
+      id: '0.5582548368846094',
+      title: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry',
+      isFinish: false,
+    },
+  ];
+
   getTodoList(): Todo[] {
-    return data;
+    return this.data;
   }
   getItemById(id: string): Todo {
-    return data.find((item) => item.id === id);
+    return this.data.find(item => item.id === id);
   }
   createNewItem(title: string, place: Place): Todo {
     const newItem: Todo = new Todo(Math.random().toString(), title, false, place);
-    data.push(newItem);
-    fs.writeFileSync(path.resolve(__dirname, 'data.json'), JSON.stringify(data));
+    this.data.push(newItem);
     return newItem;
   }
   toogleFinishItemById(id: string) {
-    data.map((item) => {
+    this.data.map(item => {
       if (item.id === id) {
         item.isFinish = !item.isFinish;
       }
       return item;
     });
-    fs.writeFileSync(path.resolve(__dirname, 'data.json'), JSON.stringify(data));
   }
   deleteItemById(id: string) {
-    const filteredData: Todo[] = data.filter((item) => item.id !== id);
-    fs.writeFileSync(path.resolve(__dirname, 'data.json'), JSON.stringify(filteredData));
+    const idx = this.data.findIndex(item => item.id === id);
+    this.data.splice(idx, 1);
   }
 }
