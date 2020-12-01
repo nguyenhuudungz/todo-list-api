@@ -7,9 +7,6 @@ export class Todo {
   place?: Place;
 
   constructor(id: string, title: string, isFinish: boolean, place?: Place) {
-    this.id = id;
-    this.title = title;
-    this.isFinish = isFinish;
-    this.place = place;
+    Object.assign(this, { id, title, isFinish, place });
   }
 }

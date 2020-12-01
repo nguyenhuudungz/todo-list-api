@@ -24,11 +24,13 @@ export class TodoListService {
     const data: Todo[] = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'data.json')).toString());
     return data.find((item) => item.id === id);
   }
-  createNewItem(title: string, place: Place) {
+  createNewItem(title: string, place: Place): string {
     const data: Todo[] = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'data.json')).toString());
-    const newItem: Todo = new Todo(Math.random().toString(), title, false, place);
+    const newItemId = Math.random().toString();
+    const newItem: Todo = new Todo(newItemId, title, false, place);
     data.push(newItem);
     fs.writeFileSync(path.resolve(__dirname, 'data.json'), JSON.stringify(data));
+    return newItemId;
   }
   toogleFinishItemById(id: string) {
     const data: Todo[] = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'data.json')).toString());
